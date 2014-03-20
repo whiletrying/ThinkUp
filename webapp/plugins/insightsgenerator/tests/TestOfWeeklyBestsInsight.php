@@ -60,6 +60,10 @@ class TestOfWeeklyBestsInsight extends ThinkUpInsightUnitTestCase {
             'retweet_count_cache' => 1,
             'favlike_count_cache' => 3,
             'post_text' => 'This is a really good post',
+            'author_username' => $instance->network_username,
+            'author_user_id' => 'abc',
+            'author_avatar' => 'http://example.com/example.jpg',
+            'network' => $instance->network,
             'pub_date' => date('Y-m-d H:i:s', strtotime('-1 day'))
         )); // popularity_index = 34
         $posts[] = new Post(array(
@@ -67,6 +71,10 @@ class TestOfWeeklyBestsInsight extends ThinkUpInsightUnitTestCase {
             'retweet_count_cache' => 1,
             'favlike_count_cache' => 15,
             'post_text' => 'This is an even better post',
+            'author_username' => $instance->network_username,
+            'author_user_id' => 'abc',
+            'author_avatar' => 'http://example.com/example.jpg',
+            'network' => $instance->network,
             'pub_date' => date('Y-m-d H:i:s', strtotime('-1 day'))
         )); // popularity_index = 33
         $posts[] = new Post(array(
@@ -74,6 +82,10 @@ class TestOfWeeklyBestsInsight extends ThinkUpInsightUnitTestCase {
             'retweet_count_cache' => 5,
             'favlike_count_cache' => 1,
             'post_text' => 'This is THE BEST post',
+            'author_username' => $instance->network_username,
+            'author_user_id' => 'abc',
+            'author_avatar' => 'http://example.com/example.jpg',
+            'network' => $instance->network,
             'pub_date' => date('Y-m-d H:i:s', strtotime('-1 day'))
         )); // popularity_index = 27
 
@@ -136,17 +148,29 @@ class TestOfWeeklyBestsInsight extends ThinkUpInsightUnitTestCase {
             'reply_count_cache' => 8,
             'favlike_count_cache' => 3,
             'post_text' => 'This is a really good post',
+            'author_username' => $instance->network_username,
+            'author_user_id' => 'abc',
+            'author_avatar' => 'http://example.com/example.jpg',
+            'network' => $instance->network,
             'pub_date' => date('Y-m-d H:i:s', strtotime('-1 day'))
         )); // popularity_index = 46
         $posts[] = new Post(array(
             'reply_count_cache' => 0,
             'favlike_count_cache' => 15,
             'post_text' => 'This is an even better post',
+            'author_username' => $instance->network_username,
+            'author_user_id' => 'abc',
+            'author_avatar' => 'http://example.com/example.jpg',
+            'network' => $instance->network,
             'pub_date' => date('Y-m-d H:i:s', strtotime('-1 day'))
         )); // popularity_index = 30
         $posts[] = new Post(array(
             'reply_count_cache' => 2,
             'favlike_count_cache' => 1,
+            'author_username' => $instance->network_username,
+            'author_user_id' => 'abc',
+            'author_avatar' => 'http://example.com/example.jpg',
+            'network' => $instance->network,
             'pub_date' => date('Y-m-d H:i:s', strtotime('-1 day'))
         )); // popularity_index = 12
 
@@ -175,7 +199,7 @@ class TestOfWeeklyBestsInsight extends ThinkUpInsightUnitTestCase {
         $email_insight = $this->getRenderedInsightInEmail($result);
         //Uncomment this out to see the email view of insight
         $this->debug($email_insight);
-        $this->assertPattern('/This is a really good post/', $results);
+        $this->assertPattern('/This is a really good post/', $email_insight);
     }
 
     public function testWeeklyBestsInsightWithOneReply() {
@@ -192,6 +216,10 @@ class TestOfWeeklyBestsInsight extends ThinkUpInsightUnitTestCase {
             'retweet_count_cache' => 0,
             'favlike_count_cache' => 0,
             'post_text' => 'This is a really good post',
+            'author_username' => $instance->network_username,
+            'author_user_id' => 'abc',
+            'author_avatar' => 'http://example.com/example.jpg',
+            'network' => $instance->network,
             'pub_date' => date('Y-m-d H:i:s', strtotime('-1 day'))
         )); // popularity_index = 5
 
@@ -220,7 +248,7 @@ class TestOfWeeklyBestsInsight extends ThinkUpInsightUnitTestCase {
         $email_insight = $this->getRenderedInsightInEmail($result);
         //Uncomment this out to see the email view of insight
         $this->debug($email_insight);
-        $this->assertPattern('/This is a really good post/', $results);
+        $this->assertPattern('/This is a really good post/', $email_insight);
     }
 
     public function testWeeklyBestsInsightWithFavorites() {
@@ -237,6 +265,10 @@ class TestOfWeeklyBestsInsight extends ThinkUpInsightUnitTestCase {
             'retweet_count_cache' => 0,
             'favlike_count_cache' => 3,
             'post_text' => 'This is a really good post',
+            'author_username' => $instance->network_username,
+            'author_user_id' => 'abc',
+            'author_avatar' => 'http://example.com/example.jpg',
+            'network' => $instance->network,
             'pub_date' => date('Y-m-d H:i:s', strtotime('-1 day'))
         )); // popularity_index = 6
 
@@ -267,7 +299,7 @@ class TestOfWeeklyBestsInsight extends ThinkUpInsightUnitTestCase {
         $email_insight = $this->getRenderedInsightInEmail($result);
         //Uncomment this out to see the email view of insight
         $this->debug($email_insight);
-        $this->assertPattern('/This is a really good post/', $results);
+        $this->assertPattern('/This is a really good post/', $email_insight);
     }
 
     public function testWeeklyBestsInsightWithRepliesAndFavorites() {
@@ -284,6 +316,10 @@ class TestOfWeeklyBestsInsight extends ThinkUpInsightUnitTestCase {
             'retweet_count_cache' => 0,
             'favlike_count_cache' => 5,
             'post_text' => 'This is a really good post',
+            'author_username' => $instance->network_username,
+            'author_user_id' => 'abc',
+            'author_avatar' => 'http://example.com/example.jpg',
+            'network' => $instance->network,
             'pub_date' => date('Y-m-d H:i:s', strtotime('-1 day'))
         )); // popularity_index = 30
 
@@ -313,6 +349,6 @@ class TestOfWeeklyBestsInsight extends ThinkUpInsightUnitTestCase {
         $email_insight = $this->getRenderedInsightInEmail($result);
         //Uncomment this out to see the email view of insight
         $this->debug($email_insight);
-        $this->assertPattern('/This is a really good post/', $results);
+        $this->assertPattern('/This is a really good post/', $email_insight);
     }
 }
