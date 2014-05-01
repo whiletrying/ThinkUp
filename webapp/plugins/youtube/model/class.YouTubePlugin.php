@@ -95,6 +95,7 @@ class YouTubePlugin extends Plugin implements CrawlerPlugin {
                     $youtube_crawler->fetchInstanceUserVideos();
                 } catch (Exception $e) {
                     $logger->logUserError('EXCEPTION: '.$e->getMessage(), __METHOD__.','.__LINE__);
+                    throw $e;
                 }
 
                 $dashboard_module_cacher->cacheDashboardModules();

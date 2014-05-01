@@ -108,6 +108,7 @@ class FoursquarePlugin extends Plugin implements CrawlerPlugin {
                 } catch (Exception $e) {
                     // Catch any errors that happen when we check the validity of the OAuth tokens
                     $logger->logUserError('EXCEPTION: '.$e->getMessage(), __METHOD__.','.__LINE__);
+                    throw $e;
                 }
                 $logger->logInfo("About to cache dashboard modules", __METHOD__.','.__LINE__);
 

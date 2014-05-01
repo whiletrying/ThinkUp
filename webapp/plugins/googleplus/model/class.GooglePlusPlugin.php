@@ -86,6 +86,7 @@ class GooglePlusPlugin extends Plugin implements CrawlerPlugin {
                     $google_plus_crawler->fetchInstanceUserPosts();
                 } catch (Exception $e) {
                     $logger->logUserError('EXCEPTION: '.$e->getMessage(), __METHOD__.','.__LINE__);
+                    throw $e;
                 }
 
                 $dashboard_module_cacher->cacheDashboardModules();

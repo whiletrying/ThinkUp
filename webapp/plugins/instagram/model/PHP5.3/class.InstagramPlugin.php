@@ -89,6 +89,7 @@ class InstagramPlugin extends Plugin implements CrawlerPlugin {
                 $logger->logUserError(get_class($e) . ' '.$e->getMessage(), __METHOD__.','.__LINE__);
             } catch (Exception $e) {
                 $logger->logUserError(get_class($e) . ' '.$e->getMessage(), __METHOD__.','.__LINE__);
+                throw $e;
             }
             $dashboard_module_cacher->cacheDashboardModules();
 

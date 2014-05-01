@@ -66,6 +66,8 @@ class CrawlerWebController extends ThinkUpAuthAPIController {
                 // Will appear in the textarea of the HTML page
                 echo '<td></td><td>' . $e->getMessage() . '</td><td></td>';
             }
+        } catch (Exception $e) {
+           $logger->logUserError(get_class($e).": ".$e->getMessage(), __METHOD__.','.__LINE__);
         }
 
         if ($this->isAPICall()) {

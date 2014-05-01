@@ -116,6 +116,7 @@ class TwitterPlugin extends Plugin implements CrawlerPlugin {
             } catch (Exception $e) {
                 $logger->logUserError(get_class($e) ." while crawling ".$instance->network_username." on Twitter: ".
                 $e->getMessage(), __METHOD__.','.__LINE__);
+                throw $e;
             }
             $dashboard_module_cacher->cacheDashboardModules();
 
