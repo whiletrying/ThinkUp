@@ -81,8 +81,10 @@ class TestOfTwitterAgeInsight extends ThinkUpInsightUnitTestCase {
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Hey, early adopter.', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 3 years and 11 months ago. ".
-            "That's over 50% of Twitter's lifetime!", $result->text);
+        // Don't assert exact number of years/months/weeks because they will change over time
+        $this->assertPattern("/\@princesspeach joined Twitter/", $result->text);
+        $this->assertPattern("/That\'s over/", $result->text);
+        $this->assertPattern("/\% of Twitter's lifetime\!/", $result->text);
         $this->debug($this->getRenderedInsightInHTML($result));
         $this->debug($this->getRenderedInsightInEmail($result));
     }
@@ -94,8 +96,10 @@ class TestOfTwitterAgeInsight extends ThinkUpInsightUnitTestCase {
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Before it was cool...', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 4 years and 8 months ago. ".
-            "That's over 59% of Twitter's lifetime!", $result->text);
+        // Don't assert exact number of years/months/weeks because they will change over time
+        $this->assertPattern("/\@princesspeach joined Twitter/", $result->text);
+        $this->assertPattern("/That\'s over/", $result->text);
+        $this->assertPattern("/\% of Twitter's lifetime\!/", $result->text);
         $this->debug($this->getRenderedInsightInHTML($result));
         $this->debug($this->getRenderedInsightInEmail($result));
     }
@@ -106,8 +110,10 @@ class TestOfTwitterAgeInsight extends ThinkUpInsightUnitTestCase {
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Before Barack Obama joined Twitter...', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 7 years and 2 months ago. ".
-            "That's over 91% of Twitter's lifetime!", $result->text);
+        // Don't assert exact number of years/months/weeks because they will change over time
+        $this->assertPattern("/\@princesspeach joined Twitter/", $result->text);
+        $this->assertPattern("/That\'s over/", $result->text);
+        $this->assertPattern("/\% of Twitter's lifetime\!/", $result->text);
         $this->debug($this->getRenderedInsightInHTML($result));
         $this->debug($this->getRenderedInsightInEmail($result));
     }
@@ -118,9 +124,12 @@ class TestOfTwitterAgeInsight extends ThinkUpInsightUnitTestCase {
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Before the hashtag was even invented!', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 6 years and 9 months ago. ".
-            "That's over 86% of Twitter's lifetime! (The hashtag was <a href=\"https://".
-            "twitter.com/chrismessina/status/223115412\">invented</a> on August 23, 2007.)", $result->text);
+        // Don't assert exact number of years/months/weeks because they will change over time
+        $this->assertPattern("/\@princesspeach joined Twitter/", $result->text);
+        $this->assertPattern("/That\'s over/", $result->text);
+        $this->assertPattern("/\% of Twitter's lifetime\!/", $result->text);
+        $this->assertPattern("/The hashtag was/", $result->text);
+        $this->assertPattern("/on August 23, 2007\./", $result->text);
         $this->debug($this->getRenderedInsightInHTML($result));
         $this->debug($this->getRenderedInsightInEmail($result));
     }
@@ -131,8 +140,9 @@ class TestOfTwitterAgeInsight extends ThinkUpInsightUnitTestCase {
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Before Justin Bieber joined Twitter...', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 5 years and 2 months ago. ".
-            "That's over 66% of Twitter's lifetime!", $result->text);
+        $this->assertPattern("/\@princesspeach joined Twitter/", $result->text);
+        $this->assertPattern("/That\'s over/", $result->text);
+        $this->assertPattern("/\% of Twitter's lifetime\!/", $result->text);
         $this->debug($this->getRenderedInsightInHTML($result));
         $this->debug($this->getRenderedInsightInEmail($result));
     }
@@ -143,9 +153,9 @@ class TestOfTwitterAgeInsight extends ThinkUpInsightUnitTestCase {
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Pre-IPO!', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 6 months and 1 week ago. ".
-            "That's over 6% of Twitter's lifetime! (Twitter held its initial public offering on November 7, 2013.)",
-            $result->text);
+        $this->assertPattern("/\@princesspeach joined Twitter/", $result->text);
+        $this->assertPattern("/That\'s over/", $result->text);
+        $this->assertPattern("/\% of Twitter's lifetime\!/", $result->text);
         $this->debug($this->getRenderedInsightInHTML($result));
         $this->debug($this->getRenderedInsightInEmail($result));
     }
@@ -157,7 +167,8 @@ class TestOfTwitterAgeInsight extends ThinkUpInsightUnitTestCase {
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Welcome to the party.', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 3 weeks ago. Take a bow!", $result->text);
+        $this->assertPattern("/\@princesspeach joined Twitter/", $result->text);
+        $this->assertPattern("/Take a bow\!/", $result->text);
         $this->debug($this->getRenderedInsightInHTML($result));
         $this->debug($this->getRenderedInsightInEmail($result));
     }
@@ -180,8 +191,9 @@ class TestOfTwitterAgeInsight extends ThinkUpInsightUnitTestCase {
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('One in 200 million...', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 5 months and 2 weeks ago. ".
-            "That's over 5% of Twitter's lifetime!", $result->text);
+        $this->assertPattern("/\@princesspeach joined Twitter/", $result->text);
+        $this->assertPattern("/That\'s over/", $result->text);
+        $this->assertPattern("/\% of Twitter's lifetime\!/", $result->text);
         $this->debug($this->getRenderedInsightInHTML($result));
         $this->debug($this->getRenderedInsightInEmail($result));
     }
