@@ -33,7 +33,7 @@ require_once THINKUP_WEBAPP_PATH.'_lib/extlib/simpletest/web_tester.php';
 require_once THINKUP_ROOT_PATH. 'webapp/plugins/insightsgenerator/model/class.InsightPluginParent.php';
 require_once THINKUP_ROOT_PATH. 'webapp/plugins/insightsgenerator/insights/twitterage.php';
 
-class TestOfTwitterAgeInsight extends ThinkUpUnitTestCase {
+class TestOfTwitterAgeInsight extends ThinkUpInsightUnitTestCase {
 
     public function setUp(){
         parent::setUp();
@@ -77,61 +77,101 @@ class TestOfTwitterAgeInsight extends ThinkUpUnitTestCase {
 
     public function testEarlyAdopter() {
         $plugin = new TwitterAgeInsight();
-        $plugin->generateInsight($this->instance, $this->makeUser('2009-08-01'), array(), 1);
+        $plugin->generateInsight($this->instance, $this->makeUser('2010-06-11'), array(), 1);
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Hey, early adopter.', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 4 years and 9 months ago, over 61% of Twitter's lifetime.",
-            $result->text);
+        $this->assertEqual("@princesspeach joined Twitter 3 years and 11 months ago. ".
+            "That's over 50% of Twitter's lifetime!", $result->text);
+        $this->debug($this->getRenderedInsightInHTML($result));
+        $this->debug($this->getRenderedInsightInEmail($result));
     }
 
     public function testEarlyAdopterV2() {
         TimeHelper::setTime(1399686338);
         $plugin = new TwitterAgeInsight();
-        $plugin->generateInsight($this->instance, $this->makeUser('2009-05-01'), array(), 1);
+        $plugin->generateInsight($this->instance, $this->makeUser('2009-09-12'), array(), 1);
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Before it was cool...', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 5 years ago, over 64% of Twitter's lifetime.",
-            $result->text);
+        $this->assertEqual("@princesspeach joined Twitter 4 years and 8 months ago. ".
+            "That's over 59% of Twitter's lifetime!", $result->text);
+        $this->debug($this->getRenderedInsightInHTML($result));
+        $this->debug($this->getRenderedInsightInEmail($result));
+    }
+
+    public function testPreObama() {
+        $plugin = new TwitterAgeInsight();
+        $plugin->generateInsight($this->instance, $this->makeUser('2007-03-01'), array(), 1);
+        $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
+        $this->assertNotNull($result);
+        $this->assertEqual('Before Barack Obama joined Twitter...', $result->headline);
+        $this->assertEqual("@princesspeach joined Twitter 7 years and 2 months ago. ".
+            "That's over 91% of Twitter's lifetime!", $result->text);
+        $this->debug($this->getRenderedInsightInHTML($result));
+        $this->debug($this->getRenderedInsightInEmail($result));
+    }
+
+    public function testPreHashtag() {
+        $plugin = new TwitterAgeInsight();
+        $plugin->generateInsight($this->instance, $this->makeUser('2007-08-01'), array(), 1);
+        $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
+        $this->assertNotNull($result);
+        $this->assertEqual('Before the hashtag was even invented!', $result->headline);
+        $this->assertEqual("@princesspeach joined Twitter 6 years and 9 months ago. ".
+            "That's over 86% of Twitter's lifetime! (The hashtag was <a href=\"https://".
+            "twitter.com/chrismessina/status/223115412\">invented</a> on August 23, 2007.)", $result->text);
+        $this->debug($this->getRenderedInsightInHTML($result));
+        $this->debug($this->getRenderedInsightInEmail($result));
     }
 
     public function testPreBieber() {
         $plugin = new TwitterAgeInsight();
-        $plugin->generateInsight($this->instance, $this->makeUser('2009-02-01'), array(), 1);
+        $plugin->generateInsight($this->instance, $this->makeUser('2009-02-21'), array(), 1);
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Before Justin Bieber joined Twitter...', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 5 years and 3 months ago, over 67% of Twitter's lifetime.",
-            $result->text);
+        $this->assertEqual("@princesspeach joined Twitter 5 years and 2 months ago. ".
+            "That's over 66% of Twitter's lifetime!", $result->text);
+        $this->debug($this->getRenderedInsightInHTML($result));
+        $this->debug($this->getRenderedInsightInEmail($result));
     }
 
     public function testPreIPO() {
         $plugin = new TwitterAgeInsight();
-        $plugin->generateInsight($this->instance, $this->makeUser('2011-02-01'), array(), 1);
+        $plugin->generateInsight($this->instance, $this->makeUser('2013-11-01'), array(), 1);
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Pre-IPO!', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 3 years and 3 months ago, over 41% of Twitter's lifetime.",
+        $this->assertEqual("@princesspeach joined Twitter 6 months and 1 week ago. ".
+            "That's over 6% of Twitter's lifetime! (Twitter held its initial public offering on November 7, 2013.)",
             $result->text);
+        $this->debug($this->getRenderedInsightInHTML($result));
+        $this->debug($this->getRenderedInsightInEmail($result));
     }
 
     public function testLateAdopter() {
         $plugin = new TwitterAgeInsight();
-        $plugin->generateInsight($this->instance, $this->makeUser(date('Y-m-d', strtotime('-3 week', 1399686335))), array(), 1);
+        $plugin->generateInsight($this->instance, $this->makeUser(date('Y-m-d', strtotime('-3 week', 1399686335))),
+            array(), 1);
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Welcome to the party.', $result->headline);
         $this->assertEqual("@princesspeach joined Twitter 3 weeks ago. Take a bow!", $result->text);
+        $this->debug($this->getRenderedInsightInHTML($result));
+        $this->debug($this->getRenderedInsightInEmail($result));
     }
 
     public function testLateAdopterThisWeek() {
         $plugin = new TwitterAgeInsight();
-        $plugin->generateInsight($this->instance, $this->makeUser('-1 day'), array(), 1);
+        $joined_date = gmdate("Y-m-d", strtotime('-1 day'));
+        $plugin->generateInsight($this->instance, $this->makeUser($joined_date, array(), 1));
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
         $this->assertEqual('Welcome to the party.', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter this week. Take a bow!", $result->text);
+        $this->assertPattern("/Take a bow\!/", $result->text);
+        $this->debug($this->getRenderedInsightInHTML($result));
+        $this->debug($this->getRenderedInsightInEmail($result));
     }
 
     public function testEveryoneElse() {
@@ -139,9 +179,11 @@ class TestOfTwitterAgeInsight extends ThinkUpUnitTestCase {
         $plugin->generateInsight($this->instance, $this->makeUser('-6 month'), array(), 1);
         $result = $this->insight_dao->getInsight('twitter_age', $this->instance->id, date('Y-m-d'));
         $this->assertNotNull($result);
-        $this->assertEqual('One in 200 million.', $result->headline);
-        $this->assertEqual("@princesspeach joined Twitter 6 months and 25 weeks ago, over 6% of Twitter's lifetime.",
-            $result->text);
+        $this->assertEqual('One in 200 million...', $result->headline);
+        $this->assertEqual("@princesspeach joined Twitter 5 months and 2 weeks ago. ".
+            "That's over 5% of Twitter's lifetime!", $result->text);
+        $this->debug($this->getRenderedInsightInHTML($result));
+        $this->debug($this->getRenderedInsightInEmail($result));
     }
 
     private function makeUser($join_date) {
