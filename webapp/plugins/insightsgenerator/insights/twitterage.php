@@ -52,9 +52,10 @@ class TwitterAgeInsight extends InsightPluginParent implements InsightPlugin {
                 if ($joined_timestamp < strtotime('March 5, 2007')) {
                     $headline = 'Before Barack Obama joined Twitter...';
                 } else if ($joined_timestamp < strtotime('August 23, 2007')) {
-                    $headline = 'Before the hashtag was even invented!';
-                    $explainer = '(The hashtag was <a href="https://twitter.com/chrismessina/status/223115412">'.
-                        'invented</a> on August 23, 2007.)';
+                    $headline = 'Before the hashtag, there was '.$this->username.'.';
+                    $explainer = 'That\'s before the hashtag was even '.
+                        ' <a href="https://twitter.com/chrismessina/status/223115412">'.
+                        'invented</a>!';
                 } else if ($joined_timestamp < strtotime('March 26, 2008')) {
                     $headline = 'Before Lady Gaga joined Twitter...';
                 } else if ($joined_timestamp < strtotime('August 14, 2008')) {
@@ -65,22 +66,22 @@ class TwitterAgeInsight extends InsightPluginParent implements InsightPlugin {
                     $headline = 'Before Oprah Winfrey joined Twitter...';
                 } else if ($joined_timestamp < strtotime('February 20, 2009')) {
                     $headline = 'Before Katy Perry joined Twitter...';
-                } else if ($joined_timestamp <= strtotime('March 28, 2009')) {
+                } else if ($joined_timestamp < strtotime('March 28, 2009')) {
                     $headline = 'Before Justin Bieber joined Twitter...';
                 } else if ($joined_timestamp < strtotime('July 2, 2009')) {
                     $headline = 'Before Tyra Banks joined Twitter...';
                 // At time of dev, 50% of Twitter's life ago was 2010-06-12
                 // As time passes, this date will get later
-                } else if ($joined_timestamp <= ($twitter_start + $first_half_of_twitters_life)) {
+                } else if ($joined_timestamp < ($twitter_start + $first_half_of_twitters_life)) {
                     $headline = $this->getVariableCopy(array(
-                        'Before it was cool...',
-                        'Hey, early adopter.'
+                        'Somebody is an early bird!',
+                        'Achievement unlocked: %username is old-school.'
                     ));
                 } else if ($joined_timestamp < strtotime('September 8, 2011')) {
                     $headline = 'One of the first 100 million Twitter users...';
                 } else if ($joined_timestamp < strtotime('November 7, 2013')) {
                     $headline = 'Pre-IPO!';
-                    $explainer = "(Twitter held its initial public offering on November 7, 2013.)";
+                    $explainer = "That's even before Twitter's initial public offering on November 7, 2013.";
                 } else if ($joined_timestamp > strtotime('-6 months')) {
                     $headline = 'Welcome to the party.';
                 } else {
@@ -100,13 +101,19 @@ class TwitterAgeInsight extends InsightPluginParent implements InsightPlugin {
                     if ($months) {
                         $text .= " and $months month".($months==1?'':'s');
                     }
-                    $text .= " ago. That's over $percentage of Twitter's lifetime!";
+                    $text .= " ago.";
+                    if ($explainer == '') {
+                        $explainer = "That's over $percentage of Twitter's lifetime!";
+                    }
                 } else if ($seconds_joined >= $month_seconds) {
                     $text = $this->username." joined Twitter $months month".($months==1?'':'s');
                     if ($weeks) {
                         $text .= " and $weeks week".($weeks==1?'':'s');
                     }
-                    $text .= " ago. That's over $percentage of Twitter's lifetime!";
+                    $text .= " ago.";
+                    if ($explainer == '') {
+                        $explainer = "That's over $percentage of Twitter's lifetime!";
+                    }
                 } else {
                     $text = $this->username . " joined Twitter ";
                     if ($weeks < 2) {
