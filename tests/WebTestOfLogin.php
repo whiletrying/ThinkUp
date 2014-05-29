@@ -61,13 +61,13 @@ class WebTestOfLogin extends ThinkUpWebTestCase {
         $this->setField('pwd', 'wrongemail');
         $this->click("Log In");
 
-        $this->assertPattern("/Hmm\, that email seems wrong\?/");
+        $this->assertPattern("/Hmm\, that email seems wrong\./");
 
         $this->setField('email', 'me@example.com');
         $this->setField('pwd', 'wrongpassword');
         $this->click("Log In");
 
-        $this->assertPattern("/Hmm\, that password seems wrong\?/");
+        $this->assertPattern("/Hmm\, that password seems wrong\./");
         $this->assertField('email', 'me@example.com');
 
         $this->setField('pwd', 'secretpassword');
@@ -89,7 +89,7 @@ class WebTestOfLogin extends ThinkUpWebTestCase {
             //$this->showSource();
 
             if ($i < 10) {
-                $this->assertPattern("/Hmm\, that password seems wrong\?/");
+                $this->assertPattern("/Hmm\, that password seems wrong\./");
                 $this->assertField('email', 'me@example.com');
             } else {
                 $this->assertPattern("/Inactive account. Account deactivated due to too many failed logins./");
