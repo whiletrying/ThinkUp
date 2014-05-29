@@ -488,7 +488,7 @@ http:\/\/mythinkup'.str_replace('/', '\/', $site_root_path).'session\/activate.p
         $this->assertEqual($v_mgr->getTemplateDataItem('controller_title'), 'Register');
         $this->assertEqual($v_mgr->getTemplateDataItem('error_msg'),
         'Sorry, registration is closed on Bo\'s ThinkUp. '.
-        'Try <a href="https://thinkup.com">ThinkUp.com</a>?');
+        'Try <a href="https://thinkup.com">ThinkUp.com</a>.');
     }
 
     public function testInviteExpiredCodeNoAppTitlePrefix() {
@@ -517,7 +517,7 @@ http:\/\/mythinkup'.str_replace('/', '\/', $site_root_path).'session\/activate.p
         $this->assertEqual($v_mgr->getTemplateDataItem('controller_title'), 'Register');
         $this->assertEqual($v_mgr->getTemplateDataItem('error_msg'),
         'Sorry, registration is closed on ThinkUp. '.
-        'Try <a href="https://thinkup.com">ThinkUp.com</a>?');
+        'Try <a href="https://thinkup.com">ThinkUp.com</a>.');
     }
 
     public function testInviteInvalidCode() {
@@ -546,7 +546,7 @@ http:\/\/mythinkup'.str_replace('/', '\/', $site_root_path).'session\/activate.p
         $this->assertEqual($v_mgr->getTemplateDataItem('controller_title'), 'Register');
         $this->assertEqual($v_mgr->getTemplateDataItem('error_msg'),
         'Sorry, registration is closed on Bo\'s ThinkUp. '.
-        'Try <a href="https://thinkup.com">ThinkUp.com</a>?');
+        'Try <a href="https://thinkup.com">ThinkUp.com</a>.');
     }
 
     public function testInviteInvalidCodeNoAppTitlePrefix() {
@@ -575,7 +575,7 @@ http:\/\/mythinkup'.str_replace('/', '\/', $site_root_path).'session\/activate.p
         $this->assertEqual($v_mgr->getTemplateDataItem('controller_title'), 'Register');
         $this->assertEqual($v_mgr->getTemplateDataItem('error_msg'),
         'Sorry, registration is closed on ThinkUp. '.
-        'Try <a href="https://thinkup.com">ThinkUp.com</a>?');
+        'Try <a href="https://thinkup.com">ThinkUp.com</a>.');
     }
 
     public function testOfThinkUpLLCRedirect() {
