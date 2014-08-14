@@ -50,9 +50,9 @@ class TestOfUserVersionsMySQLDAO extends ThinkUpUnitTestCase {
         $builders[] = FixtureBuilder::build('user_versions', array('user_key' => 1, 'field_name' => 'a',
             'field_value' => 'a1', 'crawl_time' => '-1d'));
         $builders[] = FixtureBuilder::build('user_versions', array('user_key' => 1, 'field_name' => 'a',
-            'field_value' => 'a2', 'crawl_time' => '-0d'));
+            'field_value' => 'a2', 'crawl_time' => '-2h'));
         $builders[] = FixtureBuilder::build('user_versions', array('user_key' => 1, 'field_name' => 'b',
-            'field_value' => 'a3', 'crawl_time' => '-0d'));
+            'field_value' => 'a3', 'crawl_time' => '-3h'));
         $builders[] = FixtureBuilder::build('user_versions', array('user_key' => 2, 'field_name' => 'a',
             'field_value' => 'a4', 'crawl_time' => '-0d'));
 
