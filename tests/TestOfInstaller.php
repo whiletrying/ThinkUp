@@ -640,7 +640,8 @@ class TestOfInstaller extends ThinkUpUnitTestCase {
         'insight_baselines', 'insights', 'instances', 'instances_facebook', 'instances_hashtags', 'instances_twitter',
         'invites', 'links', 'links_short', 'mentions', 'mentions_posts', 'options',
         'owner_instances', 'owners', 'photos', 'places','places_posts',
-        'plugins', 'post_errors', 'posts', 'sessions', 'stream_data', 'stream_procs', 'user_errors', 'user_versions', 'users', 'videos');
+        'plugins', 'post_errors', 'posts', 'sessions', 'stream_data', 'stream_procs', 'user_errors', 'user_versions',
+        'users', 'videos');
         $this->assertIdentical($tables, $expected_tables);
     }
 
