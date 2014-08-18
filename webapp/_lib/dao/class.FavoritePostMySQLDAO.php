@@ -409,4 +409,53 @@ class FavoritePostMySQLDAO extends PostMySQLDAO implements FavoritePostDAO  {
         }
         return $users;
     }
+
+    public function getGenderOfFavoriters($post_id) {
+        $q = "SELECT #prefix#users.gender, COUNT(*) as count_gender FROM #prefix#favorites, #prefix#users ";
+        $q .= "WHERE #prefix#favorites.post_id = :post_id ";
+        $q .= "AND #prefix#favorites.fav_of_user_id = #prefix#users.user_id ";
+        $q .= "GROUP BY #prefix#users.gender";
+
+        $vars = array (
+                ':post_id' => $post_id
+        );
+        if ($this->profiler_enabled) {
+            Profiler::setDAOMethod ( __METHOD__ );
+        }
+
+        $ps = $this->execute ( $q, $vars );
+        $rows = $this->getDataRowsAsArrays ( $ps );
+        $gender = array ();
+        foreach ( $rows as $row ) {
+            if ($row ['gender'] == "female")
+                $gender ['female_likes_count'] = $row ['count_gender'];
+            if ($row ['gender'] == "male")
+                $gender ['male_likes_count'] = $row ['count_gender'];
+        }
+        return $gender;
+    }
+    public function getGenderOfCommenters($post_id) {
+        $q = "SELECT #prefix#users.gender, COUNT(*) as count_gender FROM #prefix#posts, #prefix#users ";
+        $q .= "WHERE #prefix#posts.in_reply_to_post_id = :post_id ";
+        $q .= "AND #prefix#posts.author_user_id = #prefix#users.user_id ";
+        $q .= "GROUP BY #prefix#users.gender";
+
+        $vars = array (
+                ':post_id' => $post_id
+        );
+        if ($this->profiler_enabled) {
+            Profiler::setDAOMethod ( __METHOD__ );
+        }
+
+        $ps = $this->execute ( $q, $vars );
+        $rows = $this->getDataRowsAsArrays ( $ps );
+        $gender = array ();
+        foreach ( $rows as $row ) {
+            if ($row ['gender'] == "female")
+                $gender ['female_comment_count'] = $row ['count_gender'];
+            if ($row ['gender'] == "male")
+                $gender ['male_comment_count'] = $row ['count_gender'];
+        }
+        return $gender;
+    }
 }
