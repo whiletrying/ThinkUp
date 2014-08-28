@@ -675,13 +675,19 @@ class TestOfInsightsGeneratorPlugin extends ThinkUpInsightUnitTestCase {
     }
 
     public function testGetEmailMessageSubjectLine() {
+        //check html_entity_decode on PHP 5.3
+        $original = 'This is a high emphasis&mdash;insight for you&hellip;';
+        $result = html_entity_decode($original);
+        echo "Decoded ".$result."
+";
+
         // High emphasis insights
         $insights = array();
 
-        $insight = new Insight();
+        $insight_high = new Insight();
         $insight_high->headline = "This is a <strong>high emphasis</strong> insight for @joeuser&hellip;";
         $insight_high->emphasis = Insight::EMPHASIS_HIGH;
-        $instance  = new Instance();
+        $instance = new Instance();
         $instance->network_username = 'joeuser';
         $instance->network = 'twitter';
         $insight_high->instance = $instance;
