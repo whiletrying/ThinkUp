@@ -677,7 +677,7 @@ class TestOfInsightsGeneratorPlugin extends ThinkUpInsightUnitTestCase {
     public function testGetEmailMessageSubjectLine() {
         //check html_entity_decode on PHP 5.3
         $original = 'This is a high emphasis&mdash;insight for you&hellip;';
-        $result = html_entity_decode($original);
+        $result = html_entity_decode($original, ENT_NOQUOTES, 'UTF-8');
         echo "Decoded ".$result."
 ";
 
