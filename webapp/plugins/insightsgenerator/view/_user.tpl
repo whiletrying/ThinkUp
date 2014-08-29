@@ -2,8 +2,9 @@
 Renders an insight with an array of user objects in related_data.
 
 Parameters:
-$user (required) A single user objects
-$bio_diff If this is a bio change, replace the description with the bio diff
+$user (required) A single user object
+$bio_before (optional) If this is a bio change, the old bio
+$bio_after (optional) If this is a bio change, the current bio
 *}
 
 {if isset($user)}
@@ -23,10 +24,10 @@ $bio_diff If this is a bio change, replace the description with the bio diff
                     {$user->other.total_likes|number_format} likes
                     {/if}
                 {/if}</p>
-                {if isset($bio_diff) and isset($bio_before) and isset($bio_after)}
+                {if isset($bio_before) and isset($bio_after)}
                 <div class="text-diff">
                     <div class="bio-diff">
-                        <p>{$bio_diff}</p>
+                        <p>{insert name="string_diff" from_text=$bio_before to_text=$bio_after}</p>
                     </div>
 
                     <div class="bio-before-after">
