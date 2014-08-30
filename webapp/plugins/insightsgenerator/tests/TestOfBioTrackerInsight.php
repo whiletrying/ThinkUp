@@ -309,4 +309,46 @@ class TestOfBioTrackerInsight extends ThinkUpInsightUnitTestCase {
             $this->debug($this->getRenderedInsightInEmail($result));
         }
     }
+
+    public function testDiffEncoding() {
+        $builders = array();
+
+        // User
+        $builders[] = FixtureBuilder::build('users', array('user_id'=>'1', 'user_name'=>'nosey',
+        'full_name'=>'Twitter User', 'follower_count'=>1, 'is_protected'=>1, 'id' => 1,
+        'avatar'=>'https://pbs.twimg.com/profile_images/476939811702718464/Qq0LPfRy_400x400.jpeg',
+        'network'=>'twitter', 'description'=>'A test Twitter User', 'location'=>'San Francisco, CA'));
+
+        // Friend
+        $builders[] = FixtureBuilder::build('users', array('user_id'=>'2', 'user_name'=>'newlywed',
+        'post_count' => 101, 'follower_count'=>36000,'is_protected'=>0,'friend_count'=>1, 'full_name'=>'Popular Gal',
+        'avatar'=>'https://pbs.twimg.com/profile_images/476939811702718464/Qq0LPfRy_400x400.jpeg', 'id' =>2,
+        'network'=>'twitter', 'description'=>'Cofounder @thinkup & @activateinc • Writer @Medium',
+        'location'=>'San Francisco, CA','is_verified'=>0));
+
+        // Follows
+        $builders[] = FixtureBuilder::build('follows', array('user_id'=>'2', 'follower_id'=>'1',
+        'last_seen'=>'-0d', 'first_seen'=>'-0d', 'network'=>'twitter','active'=>1));
+
+        // Change
+        $builders[] = FixtureBuilder::build('user_versions', array('user_key' => 2, 'field_name' => 'description',
+            'field_value' => "Cofounder @thinkup & @activateinc • Writer @Medium & @Wired • ".
+            'Blog: http://t.co/5p9HDVJDna • anil@dashes.com • 646 833-8659 • Sign up: https://t.co/1m3JNdJKwy',
+            'crawl_time' => '-2d'));
+        $builders[] = FixtureBuilder::build('user_versions', array('user_key' => 3, 'field_name' => 'description',
+            'field_value' => "Cofounder @thinkup & @activateinc • Writer @Medium & @Wired", 'crawl_time' => '-3d'));
+
+        $user_dao = DAOFactory::getDAO('UserDAO');
+        $user = $user_dao->getDetailsByUserKey(1);
+
+        $insight_plugin = new BioTrackerInsight();
+        $insight_dao = new InsightMySQLDAO();
+
+        TimeHelper::setTime(1);
+        $insight_plugin->generateInsight($this->instance, $user, $posts, 3);
+        $result = $insight_dao->getInsight($insight_plugin->slug, 10, $this->today);
+        $this->assertNotNull($result);
+
+        $this->debug($this->getRenderedInsightInHTML($result));
+    }
 }
