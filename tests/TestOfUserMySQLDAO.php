@@ -193,36 +193,24 @@ class TestOfUserMySQLDAO extends ThinkUpUnitTestCase {
         //Bio didn't change
         $this->assertEqual(1, count($changes));
 
+        //Test description version capture
         $user_array = array('user_id'=>'13', 'user_name'=>'ginatrapanichanged', 'full_name'=>'Gina Trapani ',
             'avatar'=>'avatara.jpg', 'gender'=>'', 'location'=>'San Diego', 'description'=>'Writer http://example.com',
             'url'=>'http://ginatrapani.org', 'is_verified'=>0, 'is_protected'=>0, 'follower_count'=>5000,
             'post_count'=>1000, 'joined'=>'2007-03-06 13:48:05', 'network'=>'twitter');
         $user1 = new User($user_array, 'Test Update');
         $this->assertEqual($user_dao->updateUser($user1), 1, "1 row updated");
-        $user_from_db = $user_dao->getDetails(13, 'twitter');
-        $this->assertEqual($user_from_db->user_id, 13);
-        $this->assertEqual($user_from_db->username, 'ginatrapanichanged');
-        $this->assertEqual($user_from_db->avatar, 'avatara.jpg');
-        $this->assertEqual($user_from_db->gender, '');
-        $this->assertEqual($user_from_db->location, 'San Diego');
-        $this->assertFalse($user_from_db->is_verified);
         $changes = $user_versions_dao->getRecentVersions(3, 999);
         //Bio changed
         $this->assertEqual(2, count($changes));
 
+        //Test description version non-capture (URLs only)
         $user_array = array('user_id'=>'13', 'user_name'=>'ginatrapanichanged', 'full_name'=>'Gina Trapani ',
             'avatar'=>'avatara.jpg', 'gender'=>'', 'location'=>'San Diego', 'description'=>'Writer http://t.co',
             'url'=>'http://ginatrapani.org', 'is_verified'=>0, 'is_protected'=>0, 'follower_count'=>5000,
             'post_count'=>1000, 'joined'=>'2007-03-06 13:48:05', 'network'=>'twitter');
         $user1 = new User($user_array, 'Test Update');
         $this->assertEqual($user_dao->updateUser($user1), 1, "1 row updated");
-        $user_from_db = $user_dao->getDetails(13, 'twitter');
-        $this->assertEqual($user_from_db->user_id, 13);
-        $this->assertEqual($user_from_db->username, 'ginatrapanichanged');
-        $this->assertEqual($user_from_db->avatar, 'avatara.jpg');
-        $this->assertEqual($user_from_db->gender, '');
-        $this->assertEqual($user_from_db->location, 'San Diego');
-        $this->assertFalse($user_from_db->is_verified);
         $changes = $user_versions_dao->getRecentVersions(3, 999);
         //Only URL in bio changed, doesn't count as a change so this doesn't go up
         $this->assertEqual(2, count($changes));

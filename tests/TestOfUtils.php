@@ -401,5 +401,15 @@ class TestOfUtils extends ThinkUpUnitTestCase {
         $this->debug($stripped_text);
         $this->assertEqual($stripped_text, "Designer at @8x8 | Previously Owned Design Informer ".
             "(Acquired by @smashingmag) | Co-Founder of @Famous_Outfits - ");
+
+        $text = "I work at company (http://company.com/)";
+        $stripped_text = Utils::stripURLsOutOfText($text);
+        $this->debug($stripped_text);
+        $this->assertEqual($stripped_text, "I work at company ()");
+
+        $text = "My site is http://company.com, and it is great";
+        $stripped_text = Utils::stripURLsOutOfText($text);
+        $this->debug($stripped_text);
+        $this->assertEqual($stripped_text, "My site is , and it is great");
     }
 }
