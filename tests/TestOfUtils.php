@@ -381,4 +381,25 @@ class TestOfUtils extends ThinkUpUnitTestCase {
         $cfg->setValue('thinkupllc_endpoint', 'http://example.com/thinkup/');
         $this->assertTrue(Utils::isThinkUpLLC());
     }
+
+    public function testOfStripURLsOutOfText() {
+        $text = "Entrepreneur, Investor, Adventurer - CEO - http://t.co/Nf6FJgO2qd - CEO - http://t.co/GlUI1VRYNj ".
+            "@webairhosting @webairinc @domainpals";
+        $stripped_text = Utils::stripURLsOutOfText($text);
+        $this->debug($stripped_text);
+        $this->assertEqual($stripped_text, "Entrepreneur, Investor, Adventurer - CEO -  - CEO -  ".
+            "@webairhosting @webairinc @domainpals");
+
+        $text = "Startup founder & CEO of https://t.co/JDtjH7GTad We help people find better job opportunities.";
+        $stripped_text = Utils::stripURLsOutOfText($text);
+        $this->debug($stripped_text);
+        $this->assertEqual($stripped_text, "Startup founder & CEO of  We help people find better job opportunities.");
+
+        $text = "Designer at @8x8 | Previously Owned Design Informer (Acquired by @smashingmag) | ".
+            "Co-Founder of @Famous_Outfits - http://t.co/0BHBzdBOjW";
+        $stripped_text = Utils::stripURLsOutOfText($text);
+        $this->debug($stripped_text);
+        $this->assertEqual($stripped_text, "Designer at @8x8 | Previously Owned Design Informer ".
+            "(Acquired by @smashingmag) | Co-Founder of @Famous_Outfits - ");
+    }
 }
