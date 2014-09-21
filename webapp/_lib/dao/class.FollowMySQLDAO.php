@@ -59,11 +59,12 @@ class FollowMySQLDAO extends PDODAO implements FollowDAO {
         return $this->getDataIsReturned($ps);
     }
 
-    public function update($user_id, $follower_id, $network, $debug_api_call = '') {
-        $q = " UPDATE #prefix#follows ";
-        $q .= "SET last_seen=NOW(), debug_api_call = :debug ";
+    public function update($user_id, $follower_id, $network, $active=true, $debug_api_call = '') {
+        $q = "UPDATE #prefix#follows ";
+        $q .= "SET last_seen=NOW(), active = :active, debug_api_call = :debug ";
         $q .= "WHERE user_id = :user_id AND follower_id = :follower_id AND network = :network;";
         $vars = array(
+            ':active'=>$this->convertBoolToDB($active),
             ':user_id'=>(string)$user_id,
             ':follower_id'=>(string)$follower_id,
             ':network'=>$network,
