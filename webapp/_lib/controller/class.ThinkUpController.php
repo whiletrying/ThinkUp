@@ -131,7 +131,7 @@ abstract class ThinkUpController {
                 $this->addToView('selected_instance_network', SessionCache::get('selected_instance_network'));
                 $this->addToView('selected_instance_username', SessionCache::get('selected_instance_username'));
             }
-        } catch (ConfigurationException $e) {
+        } catch (Exception $e) {
             Loader::definePathConstants();
             //echo 'sending this to Smarty:'.THINKUP_WEBAPP_PATH.'data/';
             $cfg_array =  array(
@@ -142,6 +142,15 @@ abstract class ThinkUpController {
             'app_title_prefix'=>"",
             'cache_pages'=>false);
             $this->view_mgr = new ViewManager($cfg_array);
+
+            $this->setErrorTemplateState();
+            $this->addToView('error_type', get_class($e));
+            $disable_xss = false;
+            // if we are an installer exception, don't filter XSS, we have markup, and we trust this content
+            if (get_class($e) == 'InstallerException') {
+                $disable_xss = true;
+            }
+            $this->addErrorMessage($e->getMessage(), null, $disable_xss);
         }
     }
 
