@@ -131,7 +131,7 @@ abstract class ThinkUpController {
                 $this->addToView('selected_instance_network', SessionCache::get('selected_instance_network'));
                 $this->addToView('selected_instance_username', SessionCache::get('selected_instance_username'));
             }
-        } catch (Exception $e) {
+        } catch (ConfigurationException $e) {
             Loader::definePathConstants();
             //echo 'sending this to Smarty:'.THINKUP_WEBAPP_PATH.'data/';
             $cfg_array =  array(
