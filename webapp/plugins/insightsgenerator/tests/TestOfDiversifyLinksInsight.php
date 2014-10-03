@@ -50,7 +50,7 @@ class TestOfDiversifyLinksInsight extends ThinkUpInsightUnitTestCase {
     public function testConstructor() {
         $insight_plugin = new DiversifyLinksInsight();
         $this->assertIsA($insight_plugin, 'DiversifyLinksInsight');
-      }
+    }
 
     public function tesNoLinks() {
         $insight_dao = DAOFactory::getDAO('InsightDAO');
@@ -215,8 +215,6 @@ class TestOfDiversifyLinksInsight extends ThinkUpInsightUnitTestCase {
             'title'=>'Link 1', 'post_key'=>$i, 'expanded_url'=>'http://example3.com/1', 'error'=>'', 'image_src'=>''));
         }
 
-
-
         TimeHelper::setTime(2);
         $instance = new Instance();
         $instance->id = 10;
@@ -280,8 +278,6 @@ class TestOfDiversifyLinksInsight extends ThinkUpInsightUnitTestCase {
             'title'=>'Link 1','post_key'=>$i,'expanded_url'=>'http://example3.com/1','error'=>'', 'image_src'=>''));
         }
 
-
-
         TimeHelper::setTime(1);
         $instance = new Instance();
         $instance->id = 10;
@@ -331,7 +327,6 @@ class TestOfDiversifyLinksInsight extends ThinkUpInsightUnitTestCase {
         $builders[] = FixtureBuilder::build('links', array('url'=>'http://example2.com/1',
         'title'=>'Link 1', 'post_key'=>$i, 'expanded_url'=>'http://example2.com/1', 'error'=>'', 'image_src'=>''));
 
-
         TimeHelper::setTime(1);
         $instance = new Instance();
         $instance->id = 10;
@@ -380,7 +375,6 @@ class TestOfDiversifyLinksInsight extends ThinkUpInsightUnitTestCase {
         $builders[] = FixtureBuilder::build('links', array('url'=>'http://example2.com/1',
         'title'=>'Link 1', 'post_key'=>238, 'expanded_url'=>'http://example2.com/1', 'error'=>'', 'image_src'=>''));
 
-
         TimeHelper::setTime(2);
         $instance = new Instance();
         $instance->id = 10;
@@ -412,9 +406,9 @@ class TestOfDiversifyLinksInsight extends ThinkUpInsightUnitTestCase {
 
         for($i = 137; $i <= 337; $i++) {
             if ($i==337) {
-                $builders[] = FixtureBuilder::build('posts', array('id'=>$i+1, 'post_id'=>$i+1, 'author_user_id'=>7612345,
-                'author_username'=>'testeriffic', 'author_fullname'=>'Twitter User', 'author_avatar'=>'avatar.jpg',
-                'in_reply_to_user_id' => NULL,'in_retweet_of_post_id' => NULL,
+                $builders[] = FixtureBuilder::build('posts', array('id'=>$i+1, 'post_id'=>$i+1,
+                'author_user_id'=>7612345, 'author_username'=>'testeriffic', 'author_fullname'=>'Twitter User',
+                'author_avatar'=>'avatar.jpg', 'in_reply_to_user_id' => NULL,'in_retweet_of_post_id' => NULL,
                 'network'=>'twitter', 'post_text'=>'This is an old post http://example1.com/1 with a link.',
                 'source'=>'web', 'pub_date'=>$days_ago_3, 'reply_count_cache'=>0, 'is_protected'=>0));
                 $builders[] = FixtureBuilder::build('links', array('url'=>'http://test'.$i.'.com/',
@@ -462,8 +456,8 @@ class TestOfDiversifyLinksInsight extends ThinkUpInsightUnitTestCase {
             $builders[] = FixtureBuilder::build('posts', array('id'=>$i, 'post_id'=>$i, 'author_user_id'=>7612345,
             'author_username'=>'testeriffic', 'author_fullname'=>'Twitter User', 'author_avatar'=>'avatar.jpg',
             'in_reply_to_user_id' => NULL, 'in_retweet_of_post_id' => $i==186 ? 1 : null,
-            'network'=>'facebook', 'post_text'=>'This is an old post http://example1.com/1 with a link.','source'=>'web',
-            'pub_date'=>$days_ago_3, 'reply_count_cache'=>0, 'is_protected'=>0));
+            'network'=>'facebook', 'post_text'=>'This is an old post http://example1.com/1 with a link.',
+            'source'=>'web', 'pub_date'=>$days_ago_3, 'reply_count_cache'=>0, 'is_protected'=>0));
             $builders[] = FixtureBuilder::build('links', array('url'=>'http://example1.com/1',
             'title'=>'Link 1', 'post_key'=>$i, 'expanded_url'=>'http://example1.com/1', 'error'=>'', 'image_src'=>''));
         }
@@ -474,7 +468,6 @@ class TestOfDiversifyLinksInsight extends ThinkUpInsightUnitTestCase {
         'pub_date'=>$days_ago_3, 'reply_count_cache'=>0, 'is_protected'=>0));
         $builders[] = FixtureBuilder::build('links', array('url'=>'http://example2.com/1',
         'title'=>'Link 1', 'post_key'=>188, 'expanded_url'=>'http://example2.com/1', 'error'=>'', 'image_src'=>''));
-
 
         TimeHelper::setTime(1);
         $instance = new Instance();
@@ -544,7 +537,7 @@ class TestOfDiversifyLinksInsight extends ThinkUpInsightUnitTestCase {
         $this->assertNoPattern('/>www.b.com</', $rendered);
     }
 
-    public function testOneLink() {
+    public function testOneLinkTwitterV1() {
         $insight_dao = DAOFactory::getDAO('InsightDAO');
         $post_builders = array();
 
@@ -573,6 +566,39 @@ class TestOfDiversifyLinksInsight extends ThinkUpInsightUnitTestCase {
         $this->assertEqual($result->text, 'It was the best of tabs, it was the worst of tabs. @testeriffic tweeted '
             .'1 link to aaaa.com this month.');
         $this->assertEqual("@testeriffic's most linked-to site this month", $result->headline);
+
+        $this->debug($this->getRenderedInsightInHTML($result));
+        $this->debug($this->getRenderedInsightInEmail($result));
+    }
+
+    public function testOneLinkFacebookV2() {
+        $insight_dao = DAOFactory::getDAO('InsightDAO');
+        $post_builders = array();
+
+        $days_ago_3 = date('Y-m-d H:i:s', strtotime('-3 days'));
+
+        $builders[] = FixtureBuilder::build('posts', array('id'=>444, 'post_id'=>444, 'author_user_id'=>7612345,
+         'author_username'=>'testeriffic', 'author_fullname'=>'Twitter User', 'author_avatar'=>'avatar.jpg',
+         'in_reply_to_user_id' => NULL,'in_retweet_of_post_id' => NULL,
+         'network'=>'facebook','post_text'=>'This is an old post http://www.aaa.com/1 with a link.',
+         'source'=>'web', 'pub_date'=>$days_ago_3, 'reply_count_cache'=>0, 'is_protected'=>0));
+        $builders[] = FixtureBuilder::build('links', array('url'=>'http://www.aaaa.com/',
+         'title'=>'Link 1', 'post_key'=>444, 'expanded_url'=>'http://www.aaaa.com/',
+         'error'=>'', 'image_src'=>''));
+
+        TimeHelper::setTime(3);
+        $instance = new Instance();
+        $instance->id = 10;
+        $instance->network_user_id = 7612345;
+        $instance->network_username = 'testeriffic';
+        $instance->network = 'facebook';
+        $insight_plugin = new DiversifyLinksInsight();
+        $insight_plugin->generateInsight($instance, null, $posts, 3);
+
+        $today = date('Y-m-d');
+        $result = $insight_dao->getInsight('diversify_links_monthly', 10, $today);
+        $this->assertEqual($result->text, 'testeriffic shared a link to aaaa.com in 1 status update this month.');
+        $this->assertEqual("testeriffic's most linked-to site this month", $result->headline);
 
         $this->debug($this->getRenderedInsightInHTML($result));
         $this->debug($this->getRenderedInsightInEmail($result));
@@ -626,4 +652,3 @@ class TestOfDiversifyLinksInsight extends ThinkUpInsightUnitTestCase {
         $this->debug($this->getRenderedInsightInEmail($result));
     }
 }
-

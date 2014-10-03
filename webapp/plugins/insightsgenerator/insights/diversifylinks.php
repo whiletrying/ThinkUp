@@ -117,7 +117,7 @@ class DiversifyLinksInsight extends InsightPluginParent implements InsightPlugin
             $more = ' &mdash; more than to any other site.';
             $links = 'links';
             if (count($counts) == 1 && $counts[0] == 1) {
-                $links = 'link';
+                $links = 'a link';
                 $more = '.';
             }
             if ($tweets == 0) {
